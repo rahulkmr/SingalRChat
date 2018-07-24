@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using SignalRChat.Hubs;
+
 namespace SignalRChat
 {
     public class Startup
@@ -32,6 +34,7 @@ namespace SignalRChat
             });
 
 
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -52,6 +55,10 @@ namespace SignalRChat
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
             app.UseMvc();
         }
     }
